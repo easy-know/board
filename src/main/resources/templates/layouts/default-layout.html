@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html
+        class="h-100"
+        lang="ko"
+        xmlns="http://www.w3.org/1999/html"
+        xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+        xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+
+    <link rel="stylesheet" th:href="@{static/css/bootstrap.min.css}">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css" rel="stylesheet">
+
+    <script th:src="@{static/js/jquery.min.js}" type="text/javascript"></script>
+    <script th:src="@{static/js/bootstrap.bundle.min.js}" type="text/javascript"></script>
+
+    <script type="text/javascript">
+        $.ajaxSetup({
+            cache: "false",
+            dataType: 'json',
+            contentType: 'application/json; charset=utf-8',
+            crossOrigin: true
+        })
+
+        jQuery.fn.serializeObject = function () {
+            let obj = null;
+            try {
+                if (this[0].tagName && this[0].tagName.toUpperCase() === "FORM") {
+                    let arr = this.serializeArray();
+                    if (arr) {
+                        obj = {};
+                        jQuery.each(arr, function () {
+                            obj[this.name] = this.value;
+                        });
+                    }
+                }
+            } catch (e) {
+                alert(e.message);
+            } finally {
+            }
+            return obj;
+        }
+    </script>
+    <th:block layout:fragment="script"></th:block>
+
+    <title>kotlin 게시판</title>
+</head>
+<body class="d-flex flex-column h-100">
+<header th:replace="fragments/header :: headerFragment"></header>
+<main class="flex-shrink-0">
+    <div layout:fragment="content">
+
+    </div>
+</main>
+<footer th:replace="fragments/footer :: footerFragment"></footer>
+</body>
+</html>

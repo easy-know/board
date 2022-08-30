@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="ko"
+      layout:decorate="layouts/default-layout"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:th="http://www.thymeleaf.org">
+
+<th:block layout:fragment="script">
+    <script type="text/javascript">
+        $(document).ready(function () {
+            (() => {
+                'use strict'
+                const form = document.querySelector('#postForm');
+                form.addEventListener('submit', function (event) {
+                    event.preventDefault();
+                    event.stopPropagation();
+                    if (form.checkValidity() === false) {
+                        form.classList.add('was-validated')
+                    } else {
+                        $.post(form.getAttribute("action"), JSON.stringify($('#postForm').serializeObject()), () => {
+                            location.href = "/";
+                        });
+                    }
+                }, false)
+            })()
+        });
+    </script>
+</th:block>
+
+<div class="container px-5" layout:fragment="content">
+    <div class="row my-3">
+        <h3 class="mt-5">게시글 작성하기</h3>
+    </div>
+    <hr class="my-4">
+    <div class="row mx-4">
+        <form action="/api/board" class="needs-validation" id="postForm" method="post" novalidate>
+            <div class="mb-3 py-2">
+                <label class="form-label fw-bold" for="title">Title</label>
+                <input aria-describedby="titleHelp" class="form-control py-3" id="title" name="title"
+                       placeholder="Leave a title here" required type="text">
+                <div class="invalid-feedback">
+                    Title is required.
+                </div>
+            </div>
+            <div class="mb-3 py-2">
+                <label class="form-label fw-bold" for="contents">Contents</label>
+                <textarea class="form-control py-3" id="contents" name="contents" placeholder="Leave a contents here"
+                          required style="height: 300px"></textarea>
+                <div class="invalid-feedback">
+                    Contents is required.
+                </div>
+            </div>
+            <div class="d-grid gap-2 col-4 mx-auto py-5">
+                <button class="btn btn-primary" type="submit">Register</button>
+            </div>
+        </form>
+    </div>
+</div>
+</html>

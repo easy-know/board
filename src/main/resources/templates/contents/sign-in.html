@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="ko"
+      layout:decorate="layouts/default-layout"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:th="http://www.thymeleaf.org">
+
+<th:block layout:fragment="script">
+    <script type="text/javascript">
+        function clickIdBtn(object) {
+            let idBtnElement = $(`#${object.id}`);
+            idBtnElement.addClass('d-none');
+            idBtnElement.parent('div').attr('class', 'input-group border border-2 rounded-top py-2');
+        }
+    </script>
+</th:block>
+
+
+<div class="container" layout:fragment="content">
+    <div class="row mb-5 pb-3">
+        <h1 class="mt-5 fw-bold">코프링 게시판에 로그인하세요.</h1>
+    </div>
+    <div class="row justify-content-center">
+        <div class="col-6 text-center">
+            <h4 class="fw-bold">로그인 하세요</h4>
+            <form method="post">
+                <div class="input-group border border-2 rounded py-2">
+                    <input aria-describedby="button-addon2" aria-label="Recipient's username"
+                           class="form-control border-0" name="username"
+                           placeholder="ID" required type="text">
+                    <button aria-controls="collapsePassword" aria-expanded="false" class="border-0 bg-white px-2"
+                            data-bs-target="#collapsePassword" data-bs-toggle="collapse"
+                            id="idBtn" onclick="clickIdBtn(this)" type="button">
+                        <i class="fa-solid fa-circle-arrow-right fa-lg"></i>
+                    </button>
+                </div>
+                <div class="collapse input-group mb-5 border border-top-0 py-2 border-2 rounded-bottom"
+                     id="collapsePassword">
+                    <input aria-describedby="button-addon2" aria-label="Recipient's password"
+                           class="form-control border-0" name="password"
+                           placeholder="암호" type="password">
+                    <button aria-expanded="false" class="border-0 bg-white px-2" id="passwordButton" type="submit">
+                        <i class="fa-solid fa-circle-arrow-right fa-lg"></i>
+                    </button>
+                </div>
+            </form>
+            <div class="alert alert-danger my-3" role="alert" th:if="${param.exception}" th:text="${param.exception}">
+                A simple danger alert—check it out!
+            </div>
+            <div class="pt-5 mt-5">
+                <input class="form-check-input" id="same-address" type="checkbox">
+                <label class="form-check-label" for="same-address">아이디 저장</label>
+            </div>
+            <hr class="my-4 w-50 text-center m-auto">
+            <p class="small">
+                <a class="text-muted">암호를 잊으셨나요?</a><br>
+                ID가 없으신가요?&nbsp;<a class="text-muted" href="/sign-up">지금 만드세요</a><br>
+            </p>
+        </div>
+    </div>
+</div>
+</html>

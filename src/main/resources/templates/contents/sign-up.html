@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="ko"
+      layout:decorate="layouts/default-layout"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:th="http://www.thymeleaf.org">
+
+<!-- board-list.html 고유 스크립트 추가 -->
+<th:block layout:fragment="script">
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#password').tooltip({
+                'show': true,
+                'placement': 'bottom',
+                'title': "비밀번호는 8자 이상, 숫자와 영어 대소문자가 포함"
+            });
+
+            (() => {
+                'use strict'
+                const form = document.querySelector('#signUpForm');
+                form.addEventListener('submit', function (event) {
+                    event.preventDefault();
+                    event.stopPropagation();
+                    if (form.checkValidity() === false) {
+                        form.classList.add('was-validated')
+                    } else {
+                        $.post(form.getAttribute("action"), JSON.stringify($('#signUpForm').serializeObject()), () => {
+                            location.href = "/";
+                        });
+                    }
+                }, false)
+            })()
+        });
+    </script>
+</th:block>
+
+<div class="container" layout:fragment="content">
+    <div class="row g-5 justify-content-center">
+        <div class="col-md-5 col-lg-4 order-md-last py-5">
+            <h2 class="my-3 fw-bold text-center">회원 가입</h2>
+            <p class="text-muted">ID를 가지고 계십니까? <a>&nbsp;찾아보기</a></p>
+            <form action="/api/member" class="needs-validation" id="signUpForm" method="post" novalidate>
+                <div class="row g-3">
+                    <div class="col-12 mb-3">
+                        <label class="form-label d-none" for="name">Username</label>
+                        <div class="has-validation">
+                            <input class="form-control p-3" id="name" name="name" pattern="^[가-힣]{2,5}$"
+                                   placeholder="이름" required
+                                   type="text">
+                            <div class="invalid-feedback">
+                                이름은 필수 입력 값 입니다.
+                            </div>
+                        </div>
+                    </div>
+                    <hr class="my-4">
+
+                    <div class="col-12 my-3">
+                        <label class="form-label d-none" for="email">Email</label>
+                        <input class="form-control p-3" id="email" name="email" placeholder="you@example.com" required
+                               type="email">
+                        <div class="invalid-feedback">
+                            이메일은 필수 입력 값 입니다.
+                        </div>
+                        <small class="text-muted">로그인 시 사용될 주소입니다.</small>
+                    </div>
+
+                    <div class="col-12 my-3">
+                        <label class="form-label d-none" for="password">Password</label>
+                        <input class="form-control p-3" data-toggle="tooltip" id="password" name="password"
+                               pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
+                               placeholder="비밀번호"
+                               required title="test" type="password">
+                        <div class="invalid-feedback">
+                            비밀번호는 필수 입력 값 입니다.
+                        </div>
+                    </div>
+
+                    <div class="col-12 my-3">
+                        <label class="form-label d-none" for="passwordCheck">Password Check</label>
+                        <input class="form-control p-3" id="passwordCheck" name="passwordCheck" placeholder="비밀번호 확인"
+                               required type="password">
+                        <div class="invalid-feedback">
+                            비밀번호 확는 필수 입력 값 입니다.
+                        </div>
+                    </div>
+                    <hr class="my-4">
+                    <div class="col-12">
+                        <input class="form-check-input" id="terms" required type="checkbox">
+                        <label class="form-check-label text-muted" for="terms">개인 정보 수집 동의란</label>
+                        <div class="invalid-feedback">
+                            개인 정보 수집 동의란을 체크 해주세요.
+                        </div>
+                    </div>
+                </div>
+                <button class="w-100 my-5 btn btn-dark btn-lg" type="submit">Register</button>
+            </form>
+        </div>
+    </div>
+</div>
+</html>

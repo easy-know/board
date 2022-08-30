@@ -1,0 +1,7 @@
+INSERT INTO role(`role_id`, `name`)
+VALUES ('1', 'ROLE_MEMBER') ON DUPLICATE KEY
+UPDATE ROLE_ID='1', name ='ROLE_MEMBER';
+
+INSERT INTO role(`role_id`, `name`)
+VALUES ('2', 'ADMIN') ON DUPLICATE KEY
+UPDATE ROLE_ID='2', name ='ROLE_ADMIN';
