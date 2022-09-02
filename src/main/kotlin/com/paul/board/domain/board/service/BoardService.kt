@@ -10,13 +10,15 @@ import org.springframework.transaction.annotation.Transactional
 
 @Service
 @Transactional
-class BoardService(val boardRepository: BoardRepository) {
+class BoardService(
+    val boardRepository: BoardRepository,
+) {
     fun saveBoard(memberId: Long, boardDto: BoardDto) {
         boardRepository.save(
             Board(
                 title = boardDto.title,
                 contents = boardDto.contents,
-                memberId = memberId
+                memberId = memberId,
             )
         )
     }
@@ -28,10 +30,10 @@ class BoardService(val boardRepository: BoardRepository) {
         return board.id
     }
 
-    fun findById(boardId: Long) = BoardDto(boardRepository.findById(boardId).get())
+    fun findById(boardId: Long) = boardRepository.findBoardById(boardId)
 
     fun deleteBoard(boardId: Long) = boardRepository.delete(boardRepository.findById(boardId).get())
 
     fun findAllBoard(pageable: Pageable, searchCondition: BoardSearchCondition) =
-        boardRepository.findAllBoard(pageable, searchCondition)
+        boardRepository.findAllBoardBySearchConditionPaging(pageable, searchCondition)
 }

@@ -23,7 +23,7 @@
                         form.classList.add('was-validated')
                     } else {
                         $.post(form.getAttribute("action"), JSON.stringify($('#signUpForm').serializeObject()), () => {
-                            location.href = "/";
+                            location.href = "/sign-in";
                         });
                     }
                 }, false)

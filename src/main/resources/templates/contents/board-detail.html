@@ -1,16 +1,63 @@
 <!DOCTYPE html>
 <html lang="ko"
       layout:decorate="layouts/default-layout"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:th="http://www.thymeleaf.org">
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:sec="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
 
-<!-- board-list.html 고유 CSS 추가 -->
-<th:block layout:fragment="css"></th:block>
-
-<!-- board-list.html 고유 스크립트 추가 -->
 <th:block layout:fragment="script">
+    <script type="text/javascript">
+        $(document).ready(function () {
+            getBoard(window.location.pathname.replace("/", ""));
+        });
+
+        function getBoard(boardNum) {
+            $.get("/api/board/" + boardNum, (data) => {
+                if (data) {
+                    showBoard(data);
+                }
+            })
+        }
+
+        function showBoard(board) {
+            const boardTitle = document.getElementById("boardTitle");
+            boardTitle.innerHTML = board.title;
+
+            const author = document.getElementById("author");
+            author.innerHTML = board.author;
+
+            const createdDate = document.getElementById("createdDate");
+            createdDate.innerHTML = board.createdDate;
+
+            const contents = document.getElementById("contents");
+            contents.innerHTML = board.contents;
+        }
+    </script>
 </th:block>
 
-<div layout:fragment="content">
-
+<div class="container min-vh-80" layout:fragment="content">
+    <div class="row my-3">
+        <h1 class="mt-5" id="boardTitle"></h1>
+        <ul class="list-inline">
+            <li class="list-inline-item fw-bold" id="author"></li>
+            <li class="list-inline-item text-muted" id="createdDate"></li>
+        </ul>
+    </div>
+    <hr class="my-3">
+    <div class="row" style="height: 350px;">
+        <p class="lead mb-4" id="contents"></p>
+    </div>
+    <div class="row">
+        <div class="d-grid gap-2 col-1 mx-auto">
+            <button class="btn btn-primary" type="button">
+                <i class="fa-regular fa-heart"></i>
+                <!--                <i class="fa-solid fa-heart"></i>-->
+            </button>
+        </div>
+    </div>
+    <div class="row" sec:authorize="isAuthenticated()">
+        <div class="d-grid justify-content-md-end py-3">
+            <a class="btn btn-primary btn-sm" href="/post" type="button">수정하기</a>
+        </div>
+    </div>
 </div>
 </html>

@@ -2,7 +2,6 @@ package com.paul.board.api.board
 
 import com.paul.board.domain.board.dto.BoardDto
 import com.paul.board.domain.board.dto.BoardSearchCondition
-import com.paul.board.domain.board.dto.BoardToastGridDto
 import com.paul.board.domain.board.service.BoardService
 import com.paul.board.domain.common.PageRequest
 import org.springframework.http.HttpStatus.CREATED
@@ -10,6 +9,7 @@ import org.springframework.http.HttpStatus.OK
 import org.springframework.http.ResponseEntity
 import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.*
+import java.security.Principal
 
 @RestController
 @RequestMapping("api/board")
@@ -17,7 +17,11 @@ class BoardApi(
     val boardService: BoardService
 ) {
     @PostMapping
-    fun saveBoard(@RequestBody boardDto: BoardDto) = ResponseEntity(boardService.saveBoard(1L, boardDto), CREATED)
+    fun saveBoard(
+        @RequestBody @Validated boardDto: BoardDto,
+        principal: Principal
+    ) =
+        ResponseEntity(boardService.saveBoard(principal.name.toLong(), boardDto), CREATED)
 
     @PutMapping("{boardId}")
     fun updateBoard(
@@ -29,7 +33,7 @@ class BoardApi(
     fun findAllBoard(
         @Validated pageRequest: PageRequest,
         searchCondition: BoardSearchCondition
-    ) = BoardToastGridDto.of(boardService.findAllBoard(pageRequest.of(), searchCondition), pageRequest.page)
+    ) = ResponseEntity(boardService.findAllBoard(pageRequest.of(), searchCondition), OK)
 
     @DeleteMapping("{boardId}")
     fun deleteBoard(@PathVariable boardId: Long) = ResponseEntity(boardService.deleteBoard(boardId), OK)

@@ -14,14 +14,14 @@ import javax.persistence.MappedSuperclass
 @EntityListeners(AuditingEntityListener::class)
 abstract class BaseEntity {
     @CreatedBy
-    @Column(name = "created_by", updatable = false)
+    @Column(name = "created_by", updatable = false, length = 10)
     val createdBy: String? = "anonymous"
 
     @CreatedDate
     @Column(name = "created_date", updatable = false)
     val createdDate: LocalDateTime? = LocalDateTime.now()
 
-    @Column(name = "last_modified_by")
+    @Column(name = "last_modified_by", length = 10)
     @LastModifiedBy
     var lastModifiedBy: String? = "anonymous"
 
@@ -29,6 +29,6 @@ abstract class BaseEntity {
     @LastModifiedDate
     var lastModifiedDate: LocalDateTime? = LocalDateTime.now()
 
-    @Column(name = "use_yn")
+    @Column(name = "use_yn", length = 10)
     var useYn: String? = "1"
 }

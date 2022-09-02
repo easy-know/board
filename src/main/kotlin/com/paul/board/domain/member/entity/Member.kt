@@ -14,6 +14,8 @@ class Member(
     @Column(unique = true)
     val email: String,
     val password: String,
+
+    @Column(length = 5)
     var name: String,
 ) : BaseEntity() {
     @Id
@@ -29,11 +31,7 @@ class Member(
     )
     val roles: MutableSet<Role> = mutableSetOf()
 
-    fun updateMember(name: String) {
-        this.name = name
-    }
+    fun updateMember(name: String) = run { this.name = name }
 
-    fun addRole(role: Role) {
-        this.roles.add(role)
-    }
+    fun addRole(role: Role) = run { this.roles.add(role) }
 }

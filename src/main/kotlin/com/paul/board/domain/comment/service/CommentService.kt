@@ -23,4 +23,6 @@ class CommentService(
     }
 
     fun findById(commentId: Long) = CommentDto(commentRepository.findById(commentId).get())
+    fun deleteComment(memberId: Long, commentId: Long) =
+        commentRepository.delete(commentRepository.findByIdAndMemberId(commentId, memberId))
 }
